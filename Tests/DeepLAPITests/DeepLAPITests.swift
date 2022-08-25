@@ -2,10 +2,24 @@ import XCTest
 @testable import DeepLAPI
 
 final class DeepLAPITests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(DeepLAPI().text, "Hello, World!")
+    let testToken = "<INSERT YOUR AUTH-TOKEN HERE>"
+    
+    func testTranslateText() async throws {
+        // Given
+        let sut = DeepLAPI(authToken: testToken)
+        let request = TranslationRequest(
+            text: "Hello World!",
+            sourceLanguage: .english,
+            targetLanguage: .dutch
+        )
+        
+        // Then
+        do {
+            let result = try await sut.translateText(request: request)
+            
+            XCTAssertNoThrow(result)
+        } catch let error {
+            XCTFail("Error when translation text with DeepL API: \(error)")
+        }
     }
 }
