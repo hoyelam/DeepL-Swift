@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "DeepLAPI",
     platforms: [
-        .macOS("10.16"), .iOS("15"), .tvOS("14"), .watchOS("7")
+        .macOS("10.16"), .iOS("14"), .tvOS("14"), .watchOS("7")
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
