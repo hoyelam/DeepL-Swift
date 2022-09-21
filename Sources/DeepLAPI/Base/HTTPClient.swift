@@ -19,7 +19,7 @@ extension HTTPClient {
         guard !DeepLAPI.authToken.isEmpty else {
             throw RequestError.noAuthenticationToken
         }
-
+        
         var urlComponents = URLComponents()
         urlComponents.scheme = endpoint.scheme
         urlComponents.host = endpoint.host
@@ -41,7 +41,34 @@ extension HTTPClient {
             request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         }
         
-        let (data, response) = try await URLSession.shared.data(for: request, delegate: nil)
+        if #available(macOS 12.0, iOS 15.0, *) {
+            let (data, response) = try await URLSession.shared.data(for: request, delegate: nil)
+            return try self.handleResponse(data, response, responseModel)
+        } else {
+            return try await withCheckedThrowingContinuation { continuation in
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    guard let data = data else {
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        }
+                        
+                        return
+                    }
+                   
+                    do {
+                        let result = try self.handleResponse(data, response, responseModel)
+                        continuation.resume(returning: result)
+                    } catch let error {
+                        continuation.resume(throwing: error)
+                    }
+                }
+                
+                task.resume()
+            }
+        }
+    }
+    
+    private func handleResponse<T: Decodable>(_ data: Data,  _ response: URLResponse?, _ responseModel: T.Type) throws -> T {
         guard let response = response as? HTTPURLResponse else {
             throw RequestError.noResponse
         }
