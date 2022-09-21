@@ -4,7 +4,7 @@
 DeepAPI is a Swift open-source library that implements Swift-based clients to interact with the DeepL API using an Authentication Key. You can get an Authentication Key on their website. As of right now, this library supports only the free version of the API
 
 ### Installation
-The library requires macOS 10.16+ / iOS 15.0+ / tvOS 14.0+ / watchOS 7.0+
+The library requires macOS 10.16+ / iOS 14.0+ / tvOS 14.0+ / watchOS 7.0+
 
 You can add DeepLAPI-Swift by adding it as a Swift Package Manager dependency:
 1. From the *File* menu, select *Add packages*
@@ -23,7 +23,7 @@ dependencies: [
 To translate a text
 ``` swift
 let authToken = "12345QWERTASDFG" // Provided by DeepL
-let service = DeepLAPI(accessToken: testToken)
+let service = DeepLAPI(authToken: testToken)
 let request = TranslationRequest(
     text: "Hello World!",
     sourceLanguage: .english,
