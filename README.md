@@ -23,7 +23,7 @@ dependencies: [
 To translate a text
 ``` swift
 let authToken = "12345QWERTASDFG" // Provided by DeepL
-let service = DeepLAPI(authToken: testToken)
+let service = DeepLAPI(authToken: authToken)
 let request = TranslationRequest(
     text: "Hello World!",
     sourceLanguage: .english,
@@ -31,7 +31,7 @@ let request = TranslationRequest(
 )
 
 do {
-    let result = try await sut.translateText(request: request)
+    let result = try await service.translateText(request: request)
     print(result.translations)
 } catch let error {
     // Your amazing error handling
