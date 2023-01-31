@@ -29,7 +29,7 @@ extension DeepLAPIEndpoint: Endpoint {
     var header: [String: String]? {
         return [
             "Authorization": "DeepL-Auth-Key \(DeepLAPI.authToken)",
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
         ]
     }
     
